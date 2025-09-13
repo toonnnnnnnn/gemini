@@ -9,8 +9,8 @@ import google.genai as genai
 # Configure the Gemini API
 genai.configure(api_key="AIzaSyB-xxx-k")
 
-# Create the FastHTML app
-app = FastHTML()
+# Create the FastHTML app and route shortcut
+app, rt = fast_app()
 
 # Configure upload settings
 UPLOAD_FOLDER = Path("uploads")
@@ -64,7 +64,7 @@ def process_with_ocr(file_path, file_type):
     except Exception as e:
         return f"Error processing file: {str(e)}"
 
-@app.route("/")
+@rt("/")
 def home():
     return Html(
         Head(
@@ -78,7 +78,7 @@ def home():
                     Form(
                         Div(
                             Label("Upload Image or PDF:", class_="form-label"),
-                            Input(type="file", name="file", class="form-control", accept=".png,.jpg,.jpeg,.gif,.pdf", required=True),
+                            Input(type="file", name="file", class_="form-control", accept=".png,.jpg,.jpeg,.gif,.pdf", required=True),
                             class_="mb-3"
                         ),
                         Button("Process OCR", type="submit", class_="btn btn-primary"),
@@ -94,13 +94,19 @@ def home():
         )
     )
 
-@app.route("/upload", methods=["POST"])
-def upload_file():
+@rt("/upload", methods=["POST"])
+def upload_file(req: Request):
     try:
-        # Get the uploaded file
-        file = request.files.get('file')
+        # Get the uploaded file using FastHTML's request handling
+        form = req.form()
+        files = req.files()
         
-        if not file or file.filename == '':
+        if 'file' not in files:
+            return redirect('/?error=No file selected')
+        
+        file = files['file']
+        
+        if not file.filename:
             return redirect('/?error=No file selected')
         
         if not allowed_file(file.filename):
@@ -109,7 +115,10 @@ def upload_file():
         # Save the file temporarily
         filename = file.filename
         file_path = UPLOAD_FOLDER / filename
-        file.save(file_path)
+        
+        # Save uploaded file
+        with open(file_path, 'wb') as f:
+            f.write(file.file.read())
         
         # Get file extension for MIME type
         file_ext = filename.rsplit('.', 1)[1].lower()
@@ -152,7 +161,7 @@ def upload_file():
     except Exception as e:
         return redirect(f'/?error={str(e)}')
 
-@app.route("/health")
+@rt("/health")
 def health():
     return {"status": "healthy", "message": "OCR service is running"}
 
