@@ -21,8 +21,8 @@ COPY app.py .
 # Create uploads directory
 RUN mkdir -p uploads
 
-# Expose port 8001 (as specified in FastHTML docs)
-EXPOSE 8001
+# Expose port 5001 (as specified in FastHTML docs)
+EXPOSE 5001
 
 # Run the application
 CMD ["python", "app.py"]

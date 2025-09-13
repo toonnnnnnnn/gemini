@@ -29,7 +29,7 @@ A web application built with FastHTML and Google GenAI for OCR (Optical Characte
    ```bash
    python app.py
    ```
-5. Open your browser to `http://localhost:8001`
+5. Open your browser to `http://localhost:5001`
 
 ### Docker Deployment
 
@@ -39,9 +39,9 @@ A web application built with FastHTML and Google GenAI for OCR (Optical Characte
    ```
 2. Run the container:
    ```bash
-   docker run -p 8001:8001 ocr-app
+   docker run -p 5001:5001 ocr-app
    ```
-3. Open your browser to `http://localhost:8001`
+3. Open your browser to `http://localhost:5001`
 
 ## API Endpoints
 
@@ -59,7 +59,7 @@ A web application built with FastHTML and Google GenAI for OCR (Optical Characte
 
 ## Configuration
 
-The application uses port 8001 as specified in the FastHTML documentation. The Google GenAI API key should be configured in the `app.py` file.
+The application uses port 5001 as specified in the FastHTML documentation. The Google GenAI API key should be configured in the `app.py` file.
 
 ## Dependencies
 
@@ -73,5 +73,5 @@ The application uses port 8001 as specified in the FastHTML documentation. The G
 The Dockerfile uses:
 - Debian-based Python 3.11 image
 - libxrender1 system dependency (as specified)
-- Port 8001 exposure
+- Port 5001 exposure
 - Optimized layer caching for requirements

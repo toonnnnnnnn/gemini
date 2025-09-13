@@ -157,5 +157,5 @@ def health():
     return {"status": "healthy", "message": "OCR service is running"}
 
 if __name__ == "__main__":
-    # Run on port 8001 as specified in the FastHTML documentation
-    serve(port=8001)
+    # Run on port 5001 as specified in the FastHTML documentation
+    serve(port=5001)
